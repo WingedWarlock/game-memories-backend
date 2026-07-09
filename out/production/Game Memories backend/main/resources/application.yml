@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/game_memories
     username: postgres
-    password: fabio666
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
