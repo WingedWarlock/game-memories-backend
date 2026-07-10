@@ -9,7 +9,6 @@ public class GameRequest {
     private String saga;
     private String genre;
     private String platform;
-    private String coverImage;
     private String description;
     private String notes;
     private Boolean favorite;

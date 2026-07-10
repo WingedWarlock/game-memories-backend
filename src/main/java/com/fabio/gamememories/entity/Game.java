@@ -27,7 +27,6 @@ public class Game {
     private String saga;
     private String genre;
     private String platform;
-    private String coverImage;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -53,4 +52,17 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<GameMemory> memories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("displayOrder ASC")
+    @Builder.Default
+    private List<GameCover> covers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<GameScreenshot> screenshots = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<GameMusic> music = new ArrayList<>();
 }

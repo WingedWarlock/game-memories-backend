@@ -13,7 +13,6 @@ public class GameResponse {
     private String saga;
     private String genre;
     private String platform;
-    private String coverImage;
     private String description;
     private String notes;
     private Boolean favorite;
@@ -28,7 +27,6 @@ public class GameResponse {
         response.setSaga(game.getSaga());
         response.setGenre(game.getGenre());
         response.setPlatform(game.getPlatform());
-        response.setCoverImage(game.getCoverImage());
         response.setDescription(game.getDescription());
         response.setNotes(game.getNotes());
         response.setFavorite(game.getFavorite());

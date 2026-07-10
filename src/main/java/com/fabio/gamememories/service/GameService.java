@@ -32,7 +32,6 @@ public class GameService {
                 .saga(request.getSaga())
                 .genre(request.getGenre())
                 .platform(request.getPlatform())
-                .coverImage(request.getCoverImage())
                 .description(request.getDescription())
                 .notes(request.getNotes())
                 .favorite(request.getFavorite())
@@ -47,7 +46,6 @@ public class GameService {
         game.setSaga(request.getSaga());
         game.setGenre(request.getGenre());
         game.setPlatform(request.getPlatform());
-        game.setCoverImage(request.getCoverImage());
         game.setDescription(request.getDescription());
         game.setNotes(request.getNotes());
         game.setFavorite(request.getFavorite());
