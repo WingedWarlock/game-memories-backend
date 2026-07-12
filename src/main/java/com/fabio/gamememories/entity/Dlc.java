@@ -3,30 +3,30 @@ package com.fabio.gamememories.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "save_points")
+@Table(name = "dlcs")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SavePoint {
+public class Dlc {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "run_id", nullable = false)
-    private Run run;
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game game;
 
-    private String slot;
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private LocalDate date;
+    private Boolean completed;
+
+    @Column(columnDefinition = "TEXT")
+    private String notes;
 }

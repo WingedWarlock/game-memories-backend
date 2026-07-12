@@ -1,0 +1,12 @@
+package com.fabio.gamememories.repository;
+
+import com.fabio.gamememories.entity.Dlc;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DlcRepository extends JpaRepository<Dlc, Long> {
+    List<Dlc> findByGameId(Long gameId);
+}

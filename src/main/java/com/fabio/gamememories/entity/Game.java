@@ -1,5 +1,6 @@
 package com.fabio.gamememories.entity;
 
+import com.fabio.gamememories.enums.GameRating;
 import com.fabio.gamememories.enums.GameStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,6 +40,11 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private GameStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private GameRating rating;
+
+    private Boolean myHundredPercent;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -65,4 +71,16 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<GameMusic> music = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Achievement> achievements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Dlc> dlcs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Mod> mods = new ArrayList<>();
 }

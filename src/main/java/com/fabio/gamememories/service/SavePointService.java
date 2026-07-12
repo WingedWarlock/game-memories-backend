@@ -37,6 +37,7 @@ public class SavePointService {
                 .slot(request.getSlot())
                 .title(request.getTitle())
                 .description(request.getDescription())
+                .date(request.getDate())
                 .build();
         return SavePointResponse.from(savePointRepository.save(savePoint));
     }
@@ -46,6 +47,7 @@ public class SavePointService {
         savePoint.setSlot(request.getSlot());
         savePoint.setTitle(request.getTitle());
         savePoint.setDescription(request.getDescription());
+        savePoint.setDate(request.getDate());
         return SavePointResponse.from(savePointRepository.save(savePoint));
     }
 

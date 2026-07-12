@@ -1,5 +1,6 @@
 package com.fabio.gamememories.dto.game;
 
+import com.fabio.gamememories.enums.GameRating;
 import com.fabio.gamememories.enums.GameStatus;
 import lombok.Data;
 
@@ -13,4 +14,6 @@ public class GameRequest {
     private String notes;
     private Boolean favorite;
     private GameStatus status;
+    private GameRating rating;
+    private Boolean myHundredPercent;
 }

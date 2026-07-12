@@ -1,6 +1,7 @@
 package com.fabio.gamememories.dto.game;
 
 import com.fabio.gamememories.entity.Game;
+import com.fabio.gamememories.enums.GameRating;
 import com.fabio.gamememories.enums.GameStatus;
 import lombok.Data;
 
@@ -17,6 +18,8 @@ public class GameResponse {
     private String notes;
     private Boolean favorite;
     private GameStatus status;
+    private GameRating rating;
+    private Boolean myHundredPercent;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -31,6 +34,8 @@ public class GameResponse {
         response.setNotes(game.getNotes());
         response.setFavorite(game.getFavorite());
         response.setStatus(game.getStatus());
+        response.setRating(game.getRating());
+        response.setMyHundredPercent(game.getMyHundredPercent());
         response.setCreatedAt(game.getCreatedAt());
         response.setUpdatedAt(game.getUpdatedAt());
         return response;

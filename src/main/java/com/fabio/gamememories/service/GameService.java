@@ -36,6 +36,8 @@ public class GameService {
                 .notes(request.getNotes())
                 .favorite(request.getFavorite())
                 .status(request.getStatus())
+                .rating(request.getRating())
+                .myHundredPercent(request.getMyHundredPercent())
                 .build();
         return GameResponse.from(gameRepository.save(game));
     }
@@ -50,6 +52,8 @@ public class GameService {
         game.setNotes(request.getNotes());
         game.setFavorite(request.getFavorite());
         game.setStatus(request.getStatus());
+        game.setRating(request.getRating());
+        game.setMyHundredPercent(request.getMyHundredPercent());
         return GameResponse.from(gameRepository.save(game));
     }
 
