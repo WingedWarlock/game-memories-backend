@@ -1,5 +1,6 @@
 package com.fabio.gamememories.entity;
 
+import com.fabio.gamememories.enums.HistoryEventType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,29 +8,27 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "game_screenshots")
+@Table(name = "history_events")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GameScreenshot {
+public class HistoryEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
+    @Enumerated(EnumType.STRING)
+    private HistoryEventType type;
 
-    private String filePath;
-    private String originalFileName;
-    private String title;
+    private Long gameId;
+    private String gameTitle;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime occurredAt;
 }

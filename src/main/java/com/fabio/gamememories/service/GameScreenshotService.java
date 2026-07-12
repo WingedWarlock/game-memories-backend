@@ -3,6 +3,7 @@ package com.fabio.gamememories.service;
 import com.fabio.gamememories.dto.screenshot.GameScreenshotResponse;
 import com.fabio.gamememories.entity.Game;
 import com.fabio.gamememories.entity.GameScreenshot;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.GameRepository;
 import com.fabio.gamememories.repository.GameScreenshotRepository;
@@ -20,6 +21,7 @@ public class GameScreenshotService {
     private final GameScreenshotRepository gameScreenshotRepository;
     private final GameRepository gameRepository;
     private final StorageService storageService;
+    private final HistoryService historyService;
 
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
@@ -43,7 +45,10 @@ public class GameScreenshotService {
                 .description(description)
                 .build();
 
-        return GameScreenshotResponse.from(gameScreenshotRepository.save(screenshot), baseUrl);
+        GameScreenshot saved = gameScreenshotRepository.save(screenshot);
+        historyService.record(HistoryEventType.SCREENSHOT_ADDED, game.getId(), game.getTitle(),
+                "Novo screenshot adicionado a " + game.getTitle() + ".");
+        return GameScreenshotResponse.from(saved, baseUrl);
     }
 
     public void delete(Long id) {

@@ -4,6 +4,7 @@ import com.fabio.gamememories.dto.dlc.DlcRequest;
 import com.fabio.gamememories.dto.dlc.DlcResponse;
 import com.fabio.gamememories.entity.Dlc;
 import com.fabio.gamememories.entity.Game;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.DlcRepository;
 import com.fabio.gamememories.repository.GameRepository;
@@ -18,6 +19,7 @@ public class DlcService {
 
     private final DlcRepository dlcRepository;
     private final GameRepository gameRepository;
+    private final HistoryService historyService;
 
     public List<DlcResponse> findByGame(Long gameId) {
         getGameOrThrow(gameId);
@@ -39,7 +41,10 @@ public class DlcService {
                 .completed(request.getCompleted())
                 .notes(request.getNotes())
                 .build();
-        return DlcResponse.from(dlcRepository.save(dlc));
+        Dlc saved = dlcRepository.save(dlc);
+        historyService.record(HistoryEventType.DLC_ADDED, game.getId(), game.getTitle(),
+                "DLC '" + saved.getTitle() + "' adicionada a " + game.getTitle() + ".");
+        return DlcResponse.from(saved);
     }
 
     public DlcResponse update(Long id, DlcRequest request) {

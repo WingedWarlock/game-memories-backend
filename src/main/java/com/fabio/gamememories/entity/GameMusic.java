@@ -2,6 +2,9 @@ package com.fabio.gamememories.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "game_music")
@@ -25,4 +28,7 @@ public class GameMusic {
     private String title;
     private String artist;
     private String description;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

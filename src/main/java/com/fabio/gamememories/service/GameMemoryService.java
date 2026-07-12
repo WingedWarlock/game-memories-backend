@@ -4,6 +4,7 @@ import com.fabio.gamememories.dto.memory.GameMemoryRequest;
 import com.fabio.gamememories.dto.memory.GameMemoryResponse;
 import com.fabio.gamememories.entity.Game;
 import com.fabio.gamememories.entity.GameMemory;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.GameMemoryRepository;
 import com.fabio.gamememories.repository.GameRepository;
@@ -18,6 +19,7 @@ public class GameMemoryService {
 
     private final GameMemoryRepository gameMemoryRepository;
     private final GameRepository gameRepository;
+    private final HistoryService historyService;
 
     public List<GameMemoryResponse> findByGame(Long gameId) {
         getGameOrThrow(gameId);
@@ -39,7 +41,10 @@ public class GameMemoryService {
                 .memoryDate(request.getMemoryDate())
                 .type(request.getType())
                 .build();
-        return GameMemoryResponse.from(gameMemoryRepository.save(memory));
+        GameMemory saved = gameMemoryRepository.save(memory);
+        historyService.record(HistoryEventType.MEMORY_ADDED, game.getId(), game.getTitle(),
+                "Nova memória em " + game.getTitle() + ": \"" + saved.getTitle() + "\".");
+        return GameMemoryResponse.from(saved);
     }
 
     public GameMemoryResponse update(Long id, GameMemoryRequest request) {

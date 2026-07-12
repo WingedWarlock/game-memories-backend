@@ -4,6 +4,7 @@ import com.fabio.gamememories.dto.mod.ModRequest;
 import com.fabio.gamememories.dto.mod.ModResponse;
 import com.fabio.gamememories.entity.Game;
 import com.fabio.gamememories.entity.Mod;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.GameRepository;
 import com.fabio.gamememories.repository.ModRepository;
@@ -18,6 +19,7 @@ public class ModService {
 
     private final ModRepository modRepository;
     private final GameRepository gameRepository;
+    private final HistoryService historyService;
 
     public List<ModResponse> findByGame(Long gameId) {
         getGameOrThrow(gameId);
@@ -40,7 +42,10 @@ public class ModService {
                 .active(request.getActive())
                 .notes(request.getNotes())
                 .build();
-        return ModResponse.from(modRepository.save(mod));
+        Mod saved = modRepository.save(mod);
+        historyService.record(HistoryEventType.MOD_ADDED, game.getId(), game.getTitle(),
+                "Mod '" + saved.getTitle() + "' adicionado a " + game.getTitle() + ".");
+        return ModResponse.from(saved);
     }
 
     public ModResponse update(Long id, ModRequest request) {

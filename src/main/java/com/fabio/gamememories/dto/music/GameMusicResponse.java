@@ -3,6 +3,8 @@ package com.fabio.gamememories.dto.music;
 import com.fabio.gamememories.entity.GameMusic;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class GameMusicResponse {
     private Long id;
@@ -13,6 +15,7 @@ public class GameMusicResponse {
     private String artist;
     private String description;
     private String fileUrl;
+    private LocalDateTime createdAt;
 
     public static GameMusicResponse from(GameMusic music, String baseUrl) {
         GameMusicResponse response = new GameMusicResponse();
@@ -24,6 +27,7 @@ public class GameMusicResponse {
         response.setArtist(music.getArtist());
         response.setDescription(music.getDescription());
         response.setFileUrl(baseUrl + "/files/" + music.getFilePath());
+        response.setCreatedAt(music.getCreatedAt());
         return response;
     }
 }

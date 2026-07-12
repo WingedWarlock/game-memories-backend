@@ -3,6 +3,7 @@ package com.fabio.gamememories.service;
 import com.fabio.gamememories.dto.music.GameMusicResponse;
 import com.fabio.gamememories.entity.Game;
 import com.fabio.gamememories.entity.GameMusic;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.GameMusicRepository;
 import com.fabio.gamememories.repository.GameRepository;
@@ -20,6 +21,7 @@ public class GameMusicService {
     private final GameMusicRepository gameMusicRepository;
     private final GameRepository gameRepository;
     private final StorageService storageService;
+    private final HistoryService historyService;
 
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
@@ -44,7 +46,10 @@ public class GameMusicService {
                 .description(description)
                 .build();
 
-        return GameMusicResponse.from(gameMusicRepository.save(music), baseUrl);
+        GameMusic saved = gameMusicRepository.save(music);
+        historyService.record(HistoryEventType.MUSIC_ADDED, game.getId(), game.getTitle(),
+                "Nova música adicionada a " + game.getTitle() + ": " + (saved.getTitle() != null ? saved.getTitle() : saved.getOriginalFileName()) + ".");
+        return GameMusicResponse.from(saved, baseUrl);
     }
 
     public void delete(Long id) {

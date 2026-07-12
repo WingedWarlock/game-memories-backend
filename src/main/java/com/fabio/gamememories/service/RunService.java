@@ -4,6 +4,8 @@ import com.fabio.gamememories.dto.run.RunRequest;
 import com.fabio.gamememories.dto.run.RunResponse;
 import com.fabio.gamememories.entity.Game;
 import com.fabio.gamememories.entity.Run;
+import com.fabio.gamememories.enums.HistoryEventType;
+import com.fabio.gamememories.enums.RunStatus;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.GameRepository;
 import com.fabio.gamememories.repository.RunRepository;
@@ -18,6 +20,7 @@ public class RunService {
 
     private final RunRepository runRepository;
     private final GameRepository gameRepository;
+    private final HistoryService historyService;
 
     public List<RunResponse> findByGame(Long gameId) {
         getGameOrThrow(gameId);
@@ -43,11 +46,16 @@ public class RunService {
                 .favoriteRun(request.getFavoriteRun())
                 .notes(request.getNotes())
                 .build();
-        return RunResponse.from(runRepository.save(run));
+        Run saved = runRepository.save(run);
+        historyService.record(HistoryEventType.RUN_CREATED, game.getId(), game.getTitle(),
+                "Nova run '" + saved.getRunName() + "' iniciada em " + game.getTitle() + ".");
+        return RunResponse.from(saved);
     }
 
     public RunResponse update(Long id, RunRequest request) {
         Run run = getOrThrow(id);
+        RunStatus previousStatus = run.getStatus();
+
         run.setRunName(request.getRunName());
         run.setDifficulty(request.getDifficulty());
         run.setStartDate(request.getStartDate());
@@ -56,7 +64,15 @@ public class RunService {
         run.setStatus(request.getStatus());
         run.setFavoriteRun(request.getFavoriteRun());
         run.setNotes(request.getNotes());
-        return RunResponse.from(runRepository.save(run));
+        Run saved = runRepository.save(run);
+
+        if (saved.getStatus() == RunStatus.COMPLETED && previousStatus != RunStatus.COMPLETED) {
+            Game game = saved.getGame();
+            historyService.record(HistoryEventType.RUN_COMPLETED, game.getId(), game.getTitle(),
+                    "Run '" + saved.getRunName() + "' de " + game.getTitle() + " foi concluída!");
+        }
+
+        return RunResponse.from(saved);
     }
 
     public void delete(Long id) {

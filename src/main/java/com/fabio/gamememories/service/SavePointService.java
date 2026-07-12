@@ -4,6 +4,7 @@ import com.fabio.gamememories.dto.savepoint.SavePointRequest;
 import com.fabio.gamememories.dto.savepoint.SavePointResponse;
 import com.fabio.gamememories.entity.Run;
 import com.fabio.gamememories.entity.SavePoint;
+import com.fabio.gamememories.enums.HistoryEventType;
 import com.fabio.gamememories.exception.NotFoundException;
 import com.fabio.gamememories.repository.RunRepository;
 import com.fabio.gamememories.repository.SavePointRepository;
@@ -18,6 +19,7 @@ public class SavePointService {
 
     private final SavePointRepository savePointRepository;
     private final RunRepository runRepository;
+    private final HistoryService historyService;
 
     public List<SavePointResponse> findByRun(Long runId) {
         getRunOrThrow(runId);
@@ -39,7 +41,10 @@ public class SavePointService {
                 .description(request.getDescription())
                 .date(request.getDate())
                 .build();
-        return SavePointResponse.from(savePointRepository.save(savePoint));
+        SavePoint saved = savePointRepository.save(savePoint);
+        historyService.record(HistoryEventType.SAVEPOINT_ADDED, run.getGame().getId(), run.getGame().getTitle(),
+                "Novo save point em uma run de " + run.getGame().getTitle() + ".");
+        return SavePointResponse.from(saved);
     }
 
     public SavePointResponse update(Long id, SavePointRequest request) {

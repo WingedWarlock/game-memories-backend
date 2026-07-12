@@ -3,6 +3,8 @@ package com.fabio.gamememories.dto.screenshot;
 import com.fabio.gamememories.entity.GameScreenshot;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class GameScreenshotResponse {
     private Long id;
@@ -12,6 +14,7 @@ public class GameScreenshotResponse {
     private String title;
     private String description;
     private String fileUrl;
+    private LocalDateTime createdAt;
 
     public static GameScreenshotResponse from(GameScreenshot screenshot, String baseUrl) {
         GameScreenshotResponse response = new GameScreenshotResponse();
@@ -22,6 +25,7 @@ public class GameScreenshotResponse {
         response.setTitle(screenshot.getTitle());
         response.setDescription(screenshot.getDescription());
         response.setFileUrl(baseUrl + "/files/" + screenshot.getFilePath());
+        response.setCreatedAt(screenshot.getCreatedAt());
         return response;
     }
 }
