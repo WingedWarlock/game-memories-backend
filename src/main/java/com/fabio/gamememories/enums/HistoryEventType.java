@@ -17,5 +17,6 @@ public enum HistoryEventType {
     DLC_ADDED,
     MOD_ADDED,
     SAVEPOINT_ADDED,
-    LIFE_EVENT_ADDED
+    LIFE_EVENT_ADDED,
+    SAGA_CREATED
 }
